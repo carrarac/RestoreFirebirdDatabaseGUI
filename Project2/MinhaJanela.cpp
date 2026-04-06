@@ -52,8 +52,75 @@ void MinhaJanela::on_btnExecutar_clicked(wxCommandEvent& evt)
     else
     {
         wxString comando = "";
-        switch (radioFirebirdVers->GetSelection())
+        if (chkRemoto->GetValue())
         {
+            switch (radioFirebirdVers->GetSelection())
+            {
+            case 0:
+            {
+                campoNucleos->SetValue("1");
+                comando = wxString::Format("\"C:/Program Files/Firebird/Firebird_3_0/gbak.exe\"",
+                    " -c -se %s/%s:service_mgr "
+                    "\"%s\" \"%s/%s:%s\" -user %s -password %s",
+                    campoBK->GetValue(),
+                    campoIp->GetValue(),
+                    campoPorta->GetValue(),
+                    campoDestino->GetValue(),
+                    campoUsuario->GetValue(),
+                    campoSenha->GetValue());
+            }   break;
+            case 1:
+            {
+                campoNucleos->SetValue("1");
+                comando = wxString::Format("\"C:/Program Files/Firebird/Firebird_4_0/gbak.exe\"",
+                    " -c -se %s/%s:service_mgr "
+                    "\"%s\" \"%s/%s:%s\" -user %s -password %s",
+                    campoBK->GetValue(),
+                    campoIp->GetValue(),
+                    campoPorta->GetValue(),
+                    campoDestino->GetValue(),
+                    campoUsuario->GetValue(),
+                    campoSenha->GetValue());
+            }   break;
+            case 2:
+            {
+                SYSTEM_INFO sysInfo;
+                GetSystemInfo(&sysInfo);
+                long maximoDeNucleos = sysInfo.dwNumberOfProcessors;
+                long vlNucleos;
+                if (!campoNucleos->GetValue().ToLong(&vlNucleos) || vlNucleos <= 0)
+                {
+                    wxMessageBox(wxT("Por favor, insira um número válido de núcleos (maior que zero)."),
+                        "Erro de Validação", wxOK | wxICON_ERROR);
+                    campoNucleos->SetValue("1");
+                    return;
+                }
+                if (vlNucleos >= maximoDeNucleos)
+                {
+                    wxMessageBox(wxT("Quantidade de processadores lógicos maior ou igual ao existente.\nReduzindo para um valor seguro."),
+                        "Alerta", wxOK | wxICON_WARNING);
+                    long nucleosSeguros = (maximoDeNucleos > 1) ? (maximoDeNucleos - 1) : 1;
+                    campoNucleos->SetValue(wxString::Format("%ld", nucleosSeguros));
+                    return;
+                }
+                comando = wxString::Format("\"C:/Program Files/Firebird/Firebird_5_0/gbak.exe\"",
+                    " -c  -par %s  -se %s/%s:service_mgr "
+                    "\"%s\" \"%s/%s:%s\" -user %s -password %s",
+                    campoNucleos->GetValue(),
+                    campoBK->GetValue(),
+                    campoIp->GetValue(),
+                    campoPorta->GetValue(),
+                    campoDestino->GetValue(),
+                    campoUsuario->GetValue(),
+                    campoSenha->GetValue());
+            }   break;
+            default: return; break;
+            }
+        }
+        else
+        {
+            switch (radioFirebirdVers->GetSelection())
+            {
             case 0:
             {
                 campoNucleos->SetValue("1");
@@ -110,6 +177,7 @@ void MinhaJanela::on_btnExecutar_clicked(wxCommandEvent& evt)
                     campoSenha->GetValue());
             }   break;
             default: return; break;
+            }
         }
         
         if (wxFileExists(campoDestino->GetValue()))
@@ -189,6 +257,8 @@ MinhaJanela::MinhaJanela(std::string title, int width, int height) :
 
     new wxStaticText(pnl, wxID_ANY, wxT("Núcleos"), wxPoint(420, 20), wxSize(-1, -1));
     campoNucleos = new wxTextCtrl(pnl, wxID_ANY, "1", wxPoint(420, 40), wxSize(60, -1));
+
+    chkRemoto = new wxCheckBox(pnl, wxID_ANY, wxT("Restore remoto (banco será restaurado no servidor)"), wxPoint(330, 240));
 
     radioFirebirdVers = new wxRadioBox(pnl, wxID_ANY, wxT("Versão do Firebird"),
         wxPoint(330, 130), wxSize(-1, -1), opcoes, 1, wxRA_SPECIFY_COLS);
