@@ -13,6 +13,7 @@ public:
 private:
     wxButton* btnExecutar, * btnDestinoFDB;
     wxCheckBox* chkRemoto;
+    wxComboBox* comboPageSize;
     wxRadioBox* radioFirebirdVers;
     wxTextCtrl* campoIp, * campoPorta, * campoBK, * campoUsuario, * campoSenha, * campoNucleos, * campoDestino;
     long maximoDeNucleos;

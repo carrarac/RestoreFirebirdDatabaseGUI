@@ -52,6 +52,14 @@ void MinhaJanela::on_btnExecutar_clicked(wxCommandEvent& evt)
     else
     {
         wxString comando = "";
+        wxString ip = campoIp->GetValue();
+        wxString porta = campoPorta->GetValue();
+        wxString bk = campoBK->GetValue();
+        wxString dest = campoDestino->GetValue();
+        wxString page = comboPageSize->GetValue();
+        wxString user = campoUsuario->GetValue();
+        wxString senha = campoSenha->GetValue();
+
         if (chkRemoto->GetValue())
         {
             switch (radioFirebirdVers->GetSelection())
@@ -59,28 +67,26 @@ void MinhaJanela::on_btnExecutar_clicked(wxCommandEvent& evt)
             case 0:
             {
                 campoNucleos->SetValue("1");
-                comando = wxString::Format("\"C:/Program Files/Firebird/Firebird_3_0/gbak.exe\"",
-                    " -c -se %s/%s:service_mgr "
-                    "\"%s\" \"%s/%s:%s\" -user %s -password %s",
-                    campoBK->GetValue(),
-                    campoIp->GetValue(),
-                    campoPorta->GetValue(),
-                    campoDestino->GetValue(),
-                    campoUsuario->GetValue(),
-                    campoSenha->GetValue());
+                comando = wxString::Format(
+                    "\"C:/Program Files/Firebird/Firebird_3_0/gbak.exe\""
+                    " -c -se %s/%s:service_mgr"
+                    " \"%s\" \"%s/%s:%s\" -p %s -user %s -password %s",
+                    ip, porta,   
+                    bk,     
+                    ip, porta, dest, 
+                    page, user, senha);
             }   break;
             case 1:
             {
                 campoNucleos->SetValue("1");
-                comando = wxString::Format("\"C:/Program Files/Firebird/Firebird_4_0/gbak.exe\"",
-                    " -c -se %s/%s:service_mgr "
-                    "\"%s\" \"%s/%s:%s\" -user %s -password %s",
-                    campoBK->GetValue(),
-                    campoIp->GetValue(),
-                    campoPorta->GetValue(),
-                    campoDestino->GetValue(),
-                    campoUsuario->GetValue(),
-                    campoSenha->GetValue());
+                comando = wxString::Format(
+                    "\"C:/Program Files/Firebird/Firebird_4_0/gbak.exe\""
+                    " -c -se %s/%s:service_mgr"
+                    " \"%s\" \"%s/%s:%s\" -p %s -user %s -password %s",
+                    ip, porta,
+                    bk,
+                    ip, porta, dest,
+                    page, user, senha);
             }   break;
             case 2:
             {
@@ -103,16 +109,15 @@ void MinhaJanela::on_btnExecutar_clicked(wxCommandEvent& evt)
                     campoNucleos->SetValue(wxString::Format("%ld", nucleosSeguros));
                     return;
                 }
-                comando = wxString::Format("\"C:/Program Files/Firebird/Firebird_5_0/gbak.exe\"",
-                    " -c  -par %s  -se %s/%s:service_mgr "
-                    "\"%s\" \"%s/%s:%s\" -user %s -password %s",
+                comando = wxString::Format(
+                    "\"C:/Program Files/Firebird/Firebird_5_0/gbak.exe\""
+                    " -c -par %s -se %s/%s:service_mgr"
+                    " \"%s\" \"%s/%s:%s\" -p %s -user %s -password %s",
                     campoNucleos->GetValue(),
-                    campoBK->GetValue(),
-                    campoIp->GetValue(),
-                    campoPorta->GetValue(),
-                    campoDestino->GetValue(),
-                    campoUsuario->GetValue(),
-                    campoSenha->GetValue());
+                    ip, porta,
+                    bk,
+                    ip, porta, dest,
+                    page, user, senha);
             }   break;
             default: return; break;
             }
@@ -124,26 +129,18 @@ void MinhaJanela::on_btnExecutar_clicked(wxCommandEvent& evt)
             case 0:
             {
                 campoNucleos->SetValue("1");
-                comando = wxString::Format("\"C:/Program Files/Firebird/Firebird_3_0/gbak.exe\" -c "
-                    "\"%s\" \"%s/%s:%s\" -user %s -password %s",
-                    campoBK->GetValue(),
-                    campoIp->GetValue(),
-                    campoPorta->GetValue(),
-                    campoDestino->GetValue(),
-                    campoUsuario->GetValue(),
-                    campoSenha->GetValue());
+                comando = wxString::Format(
+                    "\"C:/Program Files/Firebird/Firebird_3_0/gbak.exe\" -c"
+                    " \"%s\" \"%s/%s:%s\" -p %s -user %s -password %s",
+                    bk, ip, porta, dest, page, user, senha);
             }   break;
             case 1:
             {
                 campoNucleos->SetValue("1");
-                comando = wxString::Format("\"C:/Program Files/Firebird/Firebird_4_0/gbak.exe\" -c "
-                    "\"%s\" \"%s/%s:%s\" -user %s -password %s",
-                    campoBK->GetValue(),
-                    campoIp->GetValue(),
-                    campoPorta->GetValue(),
-                    campoDestino->GetValue(),
-                    campoUsuario->GetValue(),
-                    campoSenha->GetValue());
+                comando = wxString::Format(
+                    "\"C:/Program Files/Firebird/Firebird_4_0/gbak.exe\" -c"
+                    " \"%s\" \"%s/%s:%s\" -p %s -user %s -password %s",
+                    bk, ip, porta, dest, page, user, senha);
             }   break;
             case 2:
             {
@@ -166,20 +163,16 @@ void MinhaJanela::on_btnExecutar_clicked(wxCommandEvent& evt)
                     campoNucleos->SetValue(wxString::Format("%ld", nucleosSeguros));
                     return;
                 }
-                comando = wxString::Format("\"C:/Program Files/Firebird/Firebird_5_0/gbak.exe\" -c -par %s "
-                    "\"%s\" \"%s/%s:%s\" -user %s -password %s",
+                comando = wxString::Format(
+                    "\"C:/Program Files/Firebird/Firebird_5_0/gbak.exe\" -c -par %s"
+                    " \"%s\" \"%s/%s:%s\" -p %s -user %s -password %s",
                     campoNucleos->GetValue(),
-                    campoBK->GetValue(),
-                    campoIp->GetValue(),
-                    campoPorta->GetValue(),
-                    campoDestino->GetValue(),
-                    campoUsuario->GetValue(),
-                    campoSenha->GetValue());
+                    bk, ip, porta, dest, page, user, senha);
             }   break;
             default: return; break;
             }
         }
-        
+
         if (wxFileExists(campoDestino->GetValue()))
         {
             wxMessageBox(wxT("Já existe um banco .FDB"), "Alerta", wxOK | wxICON_INFORMATION);
@@ -189,44 +182,47 @@ void MinhaJanela::on_btnExecutar_clicked(wxCommandEvent& evt)
             campoDestino->SetValue(stringBanco);
             return;
         }
+
         wxArrayString erro;
         wxArrayString saida;
         long codigoRetorno = wxExecute(comando, saida, erro, wxEXEC_SYNC);
 
         if (codigoRetorno == -1)
         {
-            wxMessageBox(wxT("Falha crítica: Não foi possível executar o gbak.exe. \nVerifique se o Firebird está instalado no caminho correto."),
+            wxMessageBox(wxT("Falha crítica: Não foi possível executar o gbak.exe.\nVerifique se o Firebird está instalado no caminho correto."),
                 wxT("Erro de Execução"), wxOK | wxICON_ERROR);
         }
         else if (codigoRetorno != 0 || !erro.IsEmpty())
         {
             wxString mensagemErro = "Ocorreu um erro ao processar o banco de dados:\n\n";
-
             for (size_t i = 0; i < erro.GetCount(); i++)
-            {
                 mensagemErro += erro[i] + "\n";
-            }
-
             wxMessageBox(mensagemErro, "Erro no GBAK", wxOK | wxICON_ERROR);
         }
         else
         {
             wxMessageBox(wxT("Processo concluído com sucesso!"), "Sucesso", wxOK | wxICON_INFORMATION);
         }
-           
     }
-
 }
 
 MinhaJanela::MinhaJanela(std::string title, int width, int height) :
     wxFrame(nullptr, wxID_ANY, title, wxDefaultPosition, wxSize(), wxDEFAULT_FRAME_STYLE & ~wxRESIZE_BORDER)
 {
     this->EnableMaximizeButton(false);
-	this->SetSize(width, height);
+    this->SetSize(width, height);
     maximoDeNucleos = 0;
     pnl = new wxPanel(this);
     wxIcon icone = wxArtProvider::GetIcon(wxART_FOLDER);
     this->SetIcon(icone);
+
+    wxArrayString page_size;
+    page_size.Add("1024");
+    page_size.Add("2048");
+    page_size.Add("4096");
+    page_size.Add("8192");
+    page_size.Add("16384");
+    page_size.Add("32768");
 
     wxArrayString opcoes;
     opcoes.Add("Firebird 3");
@@ -253,12 +249,15 @@ MinhaJanela::MinhaJanela(std::string title, int width, int height) :
     campoUsuario = new wxTextCtrl(pnl, wxID_ANY, "SYSDBA", wxPoint(20, 210), wxSize(200, -1));
 
     new wxStaticText(pnl, wxID_ANY, "Senha", wxPoint(20, 250), wxSize(-1, -1));
-    campoSenha = new wxTextCtrl(pnl, wxID_ANY, "", wxPoint(20, 270), wxSize(200, -1), wxTE_PASSWORD);
+    campoSenha = new wxTextCtrl(pnl, wxID_ANY, "masterkey", wxPoint(20, 270), wxSize(200, -1), wxTE_PASSWORD);
 
     new wxStaticText(pnl, wxID_ANY, wxT("Núcleos"), wxPoint(420, 20), wxSize(-1, -1));
     campoNucleos = new wxTextCtrl(pnl, wxID_ANY, "1", wxPoint(420, 40), wxSize(60, -1));
 
     chkRemoto = new wxCheckBox(pnl, wxID_ANY, wxT("Restore remoto (banco será restaurado no servidor)"), wxPoint(330, 240));
+
+    new wxStaticText(pnl, wxID_ANY, "Page Size", wxPoint(330, 270), wxSize(-1, -1));
+    comboPageSize = new wxComboBox(pnl, wxID_ANY, "4096", wxPoint(330, 290), wxSize(100, -1), page_size);
 
     radioFirebirdVers = new wxRadioBox(pnl, wxID_ANY, wxT("Versão do Firebird"),
         wxPoint(330, 130), wxSize(-1, -1), opcoes, 1, wxRA_SPECIFY_COLS);
